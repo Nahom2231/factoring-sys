@@ -24,10 +24,11 @@ public class DataInitializer implements CommandLineRunner {
     private void ensureAdmin(String name, String email, String password) {
         userRepository.findByEmailIgnoreCase(email).ifPresentOrElse(
                 user -> {
-                    if (user.getRole() != Role.ADMIN) {
-                        user.setRole(Role.ADMIN);
-                        userRepository.save(user);
-                    }
+                    user.setName(name);
+                    user.setPassword(passwordEncoder.encode(password));
+                    user.setRole(Role.ADMIN);
+                    userRepository.save(user);
+                    System.out.println(">>> Updated existing admin account: " + email);
                 },
                 () -> {
                     User admin = new User();
@@ -36,6 +37,7 @@ public class DataInitializer implements CommandLineRunner {
                     admin.setPassword(passwordEncoder.encode(password));
                     admin.setRole(Role.ADMIN);
                     userRepository.save(admin);
+                    System.out.println(">>> Created new admin account: " + email);
                 }
         );
     }
