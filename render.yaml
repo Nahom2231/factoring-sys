@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: factoring-backend
+    runtime: docker
+    plan: free
+    region: frankfurt
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://factoring-db:5432/factoring_db
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: factoring-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: factoring-db
+          property: password
+      - key: PORT
+        value: 8080
+
+databases:
+  - name: factoring-db
+    databaseName: factoring_db
+    user: postgres
+    plan: free
+    region: frankfurt
