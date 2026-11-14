@@ -204,9 +204,7 @@ public class Invoice {
 
     public void setBuyerName(String buyerName) {
         this.buyerName = buyerName;
-        if (this.shipperName == null || this.shipperName.isBlank()) {
-            this.shipperName = buyerName;
-        }
+        this.shipperName = buyerName;
     }
 
     public BigDecimal getAmount() {

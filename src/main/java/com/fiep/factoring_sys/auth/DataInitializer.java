@@ -16,6 +16,7 @@ public class DataInitializer implements CommandLineRunner {
     private final String adminEmail;
     private final String adminPassword;
 
+    @org.springframework.beans.factory.annotation.Autowired
     public DataInitializer(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
@@ -27,10 +28,6 @@ public class DataInitializer implements CommandLineRunner {
         this.adminName = adminName == null ? "" : adminName.trim();
         this.adminEmail = adminEmail == null ? "" : adminEmail.trim();
         this.adminPassword = adminPassword == null ? "" : adminPassword;
-    }
-
-    public DataInitializer(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this(userRepository, passwordEncoder, "Nahom Befekadu", "", "");
     }
 
     @Override

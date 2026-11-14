@@ -199,6 +199,12 @@ public class PaymentService {
                 deal.getId(),
                 PaymentStatus.RECEIVED,
                 excludedPaymentId);
+        if (alreadyReceived == null) {
+            alreadyReceived = BigDecimal.ZERO;
+        }
+        if (payment.getAmount() == null) {
+            return;
+        }
         BigDecimal proposedTotal = alreadyReceived.add(payment.getAmount());
         if (proposedTotal.compareTo(deal.getFinancedAmount()) > 0) {
             BigDecimal remaining = deal.getFinancedAmount().subtract(alreadyReceived)
