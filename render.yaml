@@ -5,13 +5,23 @@ services:
     plan: free
     region: frankfurt
     envVars:
-      - key: SPRING_DATASOURCE_URL
-        value: jdbc:postgresql://factoring-db:5432/factoring_db
-      - key: SPRING_DATASOURCE_USERNAME
+      - key: DB_HOST
+        fromDatabase:
+          name: factoring-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: factoring-db
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: factoring-db
+          property: database
+      - key: DB_USER
         fromDatabase:
           name: factoring-db
           property: user
-      - key: SPRING_DATASOURCE_PASSWORD
+      - key: DB_PASSWORD
         fromDatabase:
           name: factoring-db
           property: password
