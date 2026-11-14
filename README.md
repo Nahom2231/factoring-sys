@@ -191,7 +191,9 @@ Open PowerShell in the project root (the directory containing `pom.xml`).
    ```
 
    Open the local URL printed by Vite (normally `http://localhost:5173`).
-   The frontend's Axios client currently targets `http://localhost:8080/api`.
+   The frontend uses the Vite proxy so `/api` requests are routed to the backend
+   at `http://localhost:8080` by default; set `VITE_API_BASE_URL` only when you
+   need to override that target.
 
 The API exposes `POST /api/auth/register` for account creation and
 `POST /api/auth/login` for sign-in. Public registration is limited to the three
