@@ -17,7 +17,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        ensureAdmin("Nahom Befekadu", "admin@company.com", "AdminPassword123!");
+        ensureAdmin("Nahom Befekadu", "admin@company.com", "Admin123456!");
         ensureAdmin("System Admin", "admin@gmail.com", "Admin123456!");
     }
 
