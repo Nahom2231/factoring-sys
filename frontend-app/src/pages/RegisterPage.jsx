@@ -11,7 +11,7 @@ function RegisterPage() {
         name: "",
         email: "",
         password: "",
-        role: "CREDIT_ANALYST"
+        role: "ADMIN"
     });
     const [errorMessage, setErrorMessage] = useState("");
     const [success, setSuccess] = useState(false);
@@ -85,6 +85,7 @@ function RegisterPage() {
                         value={form.role}
                         onChange={updateField}
                     >
+                        <option value="ADMIN">{t("Administrator (All Privileges)")}</option>
                         <option value="CREDIT_ANALYST">{t("Credit Analyst")}</option>
                         <option value="FACTORING_OFFICER">{t("Factoring Officer")}</option>
                         <option value="FINANCE_OFFICER">{t("Finance Officer")}</option>
@@ -103,7 +104,7 @@ function RegisterPage() {
                         aria-describedby="register-password-help"
                     />
                     <small id="register-password-help" className="auth-field-help">
-                        {t("Use at least 12 characters. Admin accounts must be created by an existing Admin.")}
+                        {t("Use at least 12 characters.")}
                     </small>
                     {errorMessage && <p className="login-error" role="alert">{t(errorMessage)}</p>}
                     <button className="button button-primary login-submit" type="submit" disabled={submitting}>

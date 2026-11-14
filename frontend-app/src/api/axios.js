@@ -1,19 +1,28 @@
 import axios from "axios";
 
 const resolveBaseURL = () => {
-    if (import.meta.env.VITE_API_BASE_URL) {
-        const url = import.meta.env.VITE_API_BASE_URL.trim().replace(/\/+$/, "");
-        return url.endsWith("/api") ? url : `${url}/api`;
-    }
+    const configuredURL = import.meta.env.VITE_API_BASE_URL?.trim().replace(/\/+$/, "");
+    const configuredBaseURL = configuredURL
+        ? configuredURL.endsWith("/api") ? configuredURL : `${configuredURL}/api`
+        : null;
 
     if (typeof window !== "undefined") {
         const host = window.location.hostname.toLowerCase();
-        if (host === "localhost" || host === "127.0.0.1") {
-            return "http://localhost:8080/api";
+        const isLocalHost = ["localhost", "127.0.0.1", "0.0.0.0", "::1"].includes(host);
+
+        if (isLocalHost) {
+            if (!configuredBaseURL) {
+                return "/api";
+            }
+
+            const configuredHost = new URL(configuredBaseURL, window.location.origin).hostname.toLowerCase();
+            if (["localhost", "127.0.0.1", "0.0.0.0", "::1"].includes(configuredHost)) {
+                return "/api";
+            }
         }
     }
 
-    return "https://factoring-backend-jhdm.onrender.com/api";
+    return configuredBaseURL || "https://factoring-backend-jhdm.onrender.com/api";
 };
 
 export default axios.create({

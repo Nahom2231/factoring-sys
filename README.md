@@ -191,14 +191,23 @@ Open PowerShell in the project root (the directory containing `pom.xml`).
    ```
 
    Open the local URL printed by Vite (normally `http://localhost:5173`).
-   The frontend uses the Vite proxy so `/api` requests are routed to the backend
-   at `http://localhost:8080` by default; set `VITE_API_BASE_URL` only when you
-   need to override that target.
+   Local `/api` requests are proxied by Vite to the Render backend
+   (`https://factoring-backend-jhdm.onrender.com`), so a local Spring backend
+   does not need to be running. Set `VITE_API_BASE_URL` to override the API
+   target when needed.
 
 The API exposes `POST /api/auth/register` for account creation and
 `POST /api/auth/login` for sign-in. Public registration is limited to the three
 non-admin roles. Admin account creation and user listing require an authenticated
 Admin.
+
+To promote an existing account to Admin in a hosted environment, configure
+`BOOTSTRAP_ADMIN_EMAIL` with that account's exact email. The backend promotes
+that account on startup and preserves its current password. If the account does
+not exist yet, also configure `BOOTSTRAP_ADMIN_PASSWORD` (12–72 UTF-8 bytes) to
+create it. An optional `BOOTSTRAP_ADMIN_NAME` sets the display name. Keep any
+password in the hosting provider's secret environment variables; do not commit
+it to source control.
 
 Password reset requires a configured SMTP service. Set these environment
 variables in the same PowerShell session before starting the backend:

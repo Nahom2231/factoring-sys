@@ -49,12 +49,36 @@ class AuthServiceTest {
         assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
     }
 
+    @Test
+    void doesNotAcceptHardcodedFallbackAdminPasswords() {
+        User admin = new User();
+        admin.setEmail("admin@company.com");
+        admin.setPassword("stored-password-hash");
+        when(userRepository.findByEmailIgnoreCase("admin@company.com"))
+                .thenReturn(java.util.Optional.of(admin));
+        when(passwordEncoder.matches("Admin123456!", "stored-password-hash"))
+                .thenReturn(false);
+
+        RegistrationException exception = assertThrows(
+                RegistrationException.class,
+                () -> authService.authenticate(loginRequest("admin@company.com", "Admin123456!")));
+
+        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
+    }
+
     private RegisterRequest request(Role role) {
         RegisterRequest request = new RegisterRequest();
         request.setName("Analyst");
         request.setEmail(" Analyst@Example.com ");
         request.setPassword("very-long-secure-password");
         request.setRole(role);
+        return request;
+    }
+
+    private LoginRequest loginRequest(String email, String password) {
+        LoginRequest request = new LoginRequest();
+        request.setEmail(email);
+        request.setPassword(password);
         return request;
     }
 }

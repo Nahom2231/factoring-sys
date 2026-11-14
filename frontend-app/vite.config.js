@@ -9,9 +9,8 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: 'https://factoring-backend-jhdm.onrender.com',
         changeOrigin: true,
-        secure: false,
       },
     },
   },

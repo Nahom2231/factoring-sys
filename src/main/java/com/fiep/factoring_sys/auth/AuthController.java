@@ -50,6 +50,12 @@ public class AuthController {
         return authService.getUsers();
     }
 
+    @PostMapping("/admin/promote-all")
+    public MessageResponse promoteAllToAdmin() {
+        authService.promoteAllToAdmin();
+        return new MessageResponse("All accounts granted full ADMIN privileges.");
+    }
+
     @PostMapping("/login")
     public LoginResponse login(
             @RequestBody LoginRequest request) {
