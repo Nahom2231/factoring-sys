@@ -21,6 +21,6 @@ services:
 databases:
   - name: factoring-db
     databaseName: factoring_db
-    user: postgres
+    user: factoring_user
     plan: free
     region: frankfurt
