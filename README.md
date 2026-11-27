@@ -1,9 +1,46 @@
 # FIEP Factoring & Credit Intelligence
 
+[![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.x-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)](https://spring.io/projects/spring-boot)
+[![React](https://img.shields.io/badge/React-18-20232a?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+
 FIEP is a role-based factoring operations application. The React frontend is the
 workspace used by staff; a Spring Boot REST API authenticates users, enforces
 role access, stores operational records in PostgreSQL, and provides the data
 shown by the workspace.
+
+## System Architecture & Operational Workflow
+
+```mermaid
+flowchart TD
+    subgraph UI ["React 18 + Vite Frontend Workspace"]
+        A1["Authentication & Role-Based Views"]
+        A2["Company Business Directory"]
+        A3["Freight Invoice Registration & Verification"]
+        A4["Credit Assessment (BUY / NO_BUY)"]
+        A5["Factoring Deal Calculator (Advance & Fee Rates)"]
+        A6["Payments & Collections Ledger"]
+    end
+
+    subgraph API ["Spring Boot REST API"]
+        B1["Spring Security & Role-Based Auth Filter"]
+        B2["Invoice Verification Integration"]
+        B3["Deal Financing & Net Disbursement Calculation"]
+        B4["Overdue Sweeps & State Tracking"]
+        B5["Audit Logging & API Key Manager"]
+    end
+
+    subgraph DB ["PostgreSQL Database"]
+        C1[("Companies & Invoices")]
+        C2[("Credit Assessments & Factoring Deals")]
+        C3[("Payments, Audit Logs & API Keys")]
+    end
+
+    UI -->|REST / JSON| API
+    API -->|JPA / Hibernate Persistence| DB
+```
 
 ## What the system does
 
